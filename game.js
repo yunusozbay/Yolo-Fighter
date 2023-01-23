@@ -24,6 +24,7 @@ let isMovingLeft = false;
 let isMovingRight = false;
 let isMovingUp = false;
 let isMovingDown = false;
+let isShooting = false;
 
 //Enemy aircraft
 const enemyImg = new Image()
@@ -53,10 +54,29 @@ class Enemy {
         }
     }
 }
+//Player projectile
+const playerProjectileImg = new Image()
+playerProjectileImg.src ="./images/torpedo.png"
+
+let projectiles = []
+
+class Projectile {
+    constructor(xPos, yPos, width, height) {
+        this.xPos = xPos
+        this.yPos = yPos
+        this.width = width
+        this.height = height
+    }
+    draw() {
+        ctx.drawImage(playerProjectileImg, this.xPos, this.yPos, this.width, this.height)
+        this.xPos += 4
+    } 
+}
 
 
 
 let animateId
+let shootingId = 0
 let gameOver = false
 
 
@@ -90,7 +110,6 @@ const animate = () => {
         playerY += playerSpeed
     }
 
-    //new Enemy(0, 0, 100, 100).draw() 
     //Enemy aircrafts
     if (animateId % 100 === 0) {
     enemies.push(new Enemy(myCanvas.width + 125, (myCanvas.height - 170) * Math.random(), 125, 75))}
@@ -100,6 +119,17 @@ const animate = () => {
         enemy.checkCollision()
       })
     enemies = enemies.filter(enemy => enemy.xPos > -150)
+
+    //Player projectile
+    if (isShooting && shootingId % 20 === 0) {
+        shootingId ++
+        projectiles.push(new Projectile(playerX + 150, playerY + playerHeight/3, 50, 30))
+    }
+    projectiles.forEach(element => {
+        element.draw()
+    })
+    projectiles = projectiles.filter(element => element.xPos < myCanvas.width + 50)
+    console.log(projectiles)
 
    
 
@@ -134,12 +164,18 @@ window.addEventListener('load', () => {
         if (event.key === "s") {
             isMovingDown = true
         }
+        if (event.key === " ") {
+            isShooting = true
+            shootingId = 0  
+        }
       })
+
     document.addEventListener('keyup', () => {
         isMovingLeft = false
         isMovingRight = false
         isMovingUp = false
         isMovingDown = false
+        isShooting = false
       })
 
 

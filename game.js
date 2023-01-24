@@ -1,3 +1,11 @@
+const splashScreen = document.getElementById('splash-screen')
+const gameplayScreen = document.getElementById("gameplay-screen");
+const gameoverScreen = document.getElementById("gameover-screen");
+
+gameplayScreen.style.display = "none"
+gameoverScreen.style.display = "none"
+
+
 const myCanvas = document.querySelector('canvas');
 const ctx = myCanvas.getContext("2d");
 
@@ -26,6 +34,12 @@ let isMovingUp = false;
 let isMovingDown = false;
 let isShooting = false;
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 //Enemy aircraft
 const enemyImg = new Image()
 enemyImg.src ="./images/enemy-aircraft.png"
@@ -41,7 +55,7 @@ class Enemy {
     }
     draw() {
         ctx.drawImage(enemyImg, this.xPos, this.yPos, this.width, this.height)
-        this.xPos -= 4
+        this.xPos -= 2
     }
     checkCollision() {
         if (
@@ -86,7 +100,35 @@ class Projectile {
       }
     }
   }
+}
 
+// Enemy Projectiles
+const enemyProjectileImg = new Image()
+enemyProjectileImg.src = "./images/enemy-projectile.png"
+
+let enemyProjectiles = []
+
+class EnemyProjectile {
+  constructor(xPos, yPos, width, height) {
+    this.xPos = xPos
+    this.yPos = yPos
+    this.width = width
+    this.height = height
+  }
+  draw() {
+    ctx.drawImage(enemyProjectileImg, this.xPos, this.yPos, this.width, this.height)
+    this.xPos -= getRandomInt(4, 10)
+  }
+  checkEnemyProjectileCollision() {
+    if (
+      playerX < this.xPos + this.width &&
+      playerX + playerWidth > this.xPos &&
+      playerY < this.yPos + this.height &&
+      playerHeight + playerY > this.yPos
+    ) {
+      gameOver = true
+    }
+}
 }
 
 
@@ -128,7 +170,7 @@ const animate = () => {
     }
 
     //Enemy aircrafts
-    if (animateId % 70 === 0) {
+    if (animateId % 100 === 0) {
     enemies.push(new Enemy(myCanvas.width + 125, (myCanvas.height - 170) * Math.random(), 125, 75))}
   
     enemies.forEach(enemy => {
@@ -147,12 +189,25 @@ const animate = () => {
         element.checkProjectileCollision(enemies)
     })
     projectiles = projectiles.filter(element => element.xPos < myCanvas.width + 50)
-   
+
+    //Enemy projectile
+    if (animateId % 500 === 0) {
+      enemies.forEach((element) => {
+        enemyProjectiles.push(new EnemyProjectile(element.xPos - 100, element.yPos + 30, 50, 30))
+      })}
+    
+    enemyProjectiles.forEach(element => {
+      element.draw()
+      element.checkEnemyProjectileCollision()
+    })
 
    
 
     if (gameOver) {
         cancelAnimationFrame(animateId)
+        splashScreen.style.display = 'none'
+        gameplayScreen.style.display = "none"
+        gameoverScreen.style.display = "block"
       } else {
         animateId = requestAnimationFrame(animate)
     }
@@ -160,7 +215,9 @@ const animate = () => {
 
 
 const startGame = () => {
-    document.querySelector('.game-intro').style.display = 'none'
+    splashScreen.style.display = 'none'
+    gameplayScreen.style.display = "block"
+    gameoverScreen.style.display = "none"
     animate()
   }
 

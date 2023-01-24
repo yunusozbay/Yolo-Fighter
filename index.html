@@ -8,18 +8,21 @@
     <title>Race Car</title>
   </head>
   <body>
-    <div class="game-intro">
-      <img src="./images/YOLO - FIGHTER.png" alt="" class="logo-img" />
+    <div id="splash-screen">
+      <img class="game-logo" src="./images/YOLO - FIGHTER.png" alt="" class="logo-img" />
       <br />
       <button id="start-button">StartGame</button>
       <p>Use WASD controls to move around and SPACEBAR to shoot!</p>
-      <img src="./images/controls.png" alt="" class="controls" />
+      <img class="controls-image" src="./images/controls.png" alt="" class="controls" />
     </div>
-
-    <div id="game-board">
-      <canvas id="canvas" width="1500" height="700"></canvas>
+    <div id="gameplay-screen">
+      <div id="game-board">
+        <canvas id="canvas" width="1500" height="700"></canvas>
+      </div>
     </div>
-
+    <div id="gameover-screen">
+      <p>You lost nub</p>
+    </div>
     <script type="text/javascript" src="game.js"></script>
   </body>
 </html>

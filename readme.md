@@ -1,6 +1,6 @@
 # Yolo-Fighter
 
-![alt text](./images/YOLO%20-%20FIGHTERblackops.png)
+<img src="./images/YOLO - FIGHTERblackops.png" alt="logo" width="50%"/>  
 
 ## Description
 

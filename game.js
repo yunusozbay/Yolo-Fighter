@@ -53,6 +53,9 @@ class Enemy {
           gameOver = true
         }
     }
+/*     die() {
+      enemyArr.indexOf(this).splice(indexOf(this), 1)
+    } */
 }
 //Player projectile
 const playerProjectileImg = new Image()
@@ -71,18 +74,21 @@ class Projectile {
         ctx.drawImage(playerProjectileImg, this.xPos, this.yPos, this.width, this.height)
         this.xPos += 4
     }
-    checkProjectileCollision() {
+    checkProjectileCollision(enemyArr) {
+      for (let i =0; i <enemyArr.length; i++) {
       if (
-        this.xPos < Enemy.this.xPos + Enemy.this.width &&
-        this.xPos + this.width > Enemy.this.xPos &&
-        this.yPos < Enemy.this.yPos + Enemy.this.height &&
-        this.height + this.yPos > Enemy.this.yPos
-      ) {
-        gameOver = true
+        this.xPos < enemyArr[i].xPos + enemyArr[i].width &&
+        this.xPos + this.width > enemyArr[i].xPos &&
+        this.yPos < enemyArr[i].yPos + enemyArr[i].height &&
+        this.height + this.yPos > enemyArr[i].yPos) {
+          enemyArr.splice(i, 1);
+          projectiles.splice(this, 1)
       }
+    }
   }
 
 }
+
 
 
 
@@ -122,7 +128,7 @@ const animate = () => {
     }
 
     //Enemy aircrafts
-    if (animateId % 100 === 0) {
+    if (animateId % 70 === 0) {
     enemies.push(new Enemy(myCanvas.width + 125, (myCanvas.height - 170) * Math.random(), 125, 75))}
   
     enemies.forEach(enemy => {
@@ -138,7 +144,7 @@ const animate = () => {
     }
     projectiles.forEach(element => {
         element.draw()
-        element.checkProjectileCollision()
+        element.checkProjectileCollision(enemies)
     })
     projectiles = projectiles.filter(element => element.xPos < myCanvas.width + 50)
    

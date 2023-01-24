@@ -201,7 +201,8 @@ const animate = () => {
       element.checkEnemyProjectileCollision()
     })
 
-   
+    enemyProjectiles = enemyProjectiles.filter(element => element.xPos > -150)
+
 
     if (gameOver) {
         cancelAnimationFrame(animateId)

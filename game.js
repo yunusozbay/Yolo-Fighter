@@ -41,7 +41,7 @@ class Enemy {
     }
     draw() {
         ctx.drawImage(enemyImg, this.xPos, this.yPos, this.width, this.height)
-        this.xPos -= 2
+        this.xPos -= 4
     }
     checkCollision() {
         if (
@@ -70,7 +70,18 @@ class Projectile {
     draw() {
         ctx.drawImage(playerProjectileImg, this.xPos, this.yPos, this.width, this.height)
         this.xPos += 4
-    } 
+    }
+    checkProjectileCollision() {
+      if (
+        this.xPos < Enemy.this.xPos + Enemy.this.width &&
+        this.xPos + this.width > Enemy.this.xPos &&
+        this.yPos < Enemy.this.yPos + Enemy.this.height &&
+        this.height + this.yPos > Enemy.this.yPos
+      ) {
+        gameOver = true
+      }
+  }
+
 }
 
 
@@ -127,9 +138,10 @@ const animate = () => {
     }
     projectiles.forEach(element => {
         element.draw()
+        element.checkProjectileCollision()
     })
     projectiles = projectiles.filter(element => element.xPos < myCanvas.width + 50)
-    console.log(projectiles)
+   
 
    
 

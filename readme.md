@@ -1,6 +1,6 @@
 # Yolo-Fighter
 
-![alt text](./images/YOLO%20-%20FIGHTER.png)
+![alt text](./images/YOLO%20-%20FIGHTERblackops.png)
 
 ## Description
 

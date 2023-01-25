@@ -180,7 +180,7 @@ const animate = () => {
 
     //Player projectile
     
-    setInterval(() => canShoot=true, 1000)
+    
 
     if (isShooting && canShoot) {
         projectiles.push(new Projectile(playerX + 150, playerY + playerHeight/3, 50, 30))
@@ -245,7 +245,7 @@ window.addEventListener('load', () => {
         }
         if (event.key === " ") {
             isShooting = true
-            canShoot = false
+       
         }
       })
 

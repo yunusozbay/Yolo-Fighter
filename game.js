@@ -45,8 +45,8 @@ const enemyImg = new Image()
 enemyImg.src ="./images/enemy-aircraft.png"
 
 let enemies = []
-
-let enemySpeed = 4
+let enemySpeed = 3
+let enemyProjectileSpeed = 5
 
 class Enemy {
     constructor(xPos, yPos, width, height) {
@@ -99,7 +99,7 @@ class Projectile {
         this.height + this.yPos > enemyArr[i].yPos) {
           enemyArr.splice(i, 1);
           projectiles.splice(this, 1)
-          score += 10
+          score += 20
       }
     }
   }
@@ -120,7 +120,7 @@ class EnemyProjectile {
   }
   draw() {
     ctx.drawImage(enemyProjectileImg, this.xPos, this.yPos, this.width, this.height)
-    this.xPos -= 8
+    this.xPos -= enemyProjectileSpeed
   }
   checkEnemyProjectileCollision() {
     if (
@@ -218,11 +218,30 @@ const animate = () => {
     ctx.fillStyle = "black";
     ctx.fillText(`Score: ${score}`, myCanvas.width-220, 40);
     
-    if(score === 1000){gameOver = true}
+    if(score >= 1000){gameOver = true}
 
-    if(score === 20){ enemySpeed = 8
-
+    if(score === 100){ 
+      enemySpeed = 4
+      enemyProjectileSpeed = 6
     }
+    if(score === 200){ 
+      enemySpeed = 5
+      enemyProjectileSpeed = 7
+    }
+    if(score === 400){
+      enemySpeed = 6
+      enemyProjectileSpeed = 8
+    }
+    if(score === 600){ 
+      enemySpeed = 7
+      enemyProjectileSpeed = 9
+    }
+    if(score === 800){
+      bgSpeed = 3
+      enemySpeed = 10
+      enemyProjectileSpeed = 14
+    }
+  
 
 
     if (gameOver) {
@@ -243,7 +262,7 @@ const animate = () => {
     if (score >= 0 && score <= 200) {
       gameoverMsg.innerText = "We have lost the war!"
     }
-    else if (score >= 200 && score <= 999) {
+    else if (score >= 500 && score <= 999) {
       gameoverMsg.innerText = "We have eliminated majority of them, almost there!"
     }
     else {
@@ -270,6 +289,9 @@ const restartGame = () => {
     score = 0;
     playerX = playerWidth/5
     playerY = myCanvas.height/2 - playerHeight/2
+    enemySpeed = 3
+    enemyProjectileSpeed = 5
+    bgSpeed = 2
   
 
     animate()

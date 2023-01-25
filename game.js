@@ -133,9 +133,8 @@ class EnemyProjectile {
 
 
 
-
+let canShoot = true
 let animateId
-let shootingId = 0
 let gameOver = false
 
 
@@ -177,13 +176,17 @@ const animate = () => {
         enemy.draw()
         enemy.checkCollision()
       })
-    enemies = enemies.filter(enemy => enemy.xPos > -150)
+    enemies = enemies.filter(enemy => enemy.xPos > -150)  
 
     //Player projectile
-    if (isShooting && shootingId % 20 === 0) {
-        shootingId ++
+    
+    setInterval(() => canShoot=true, 1000)
+
+    if (isShooting && canShoot) {
         projectiles.push(new Projectile(playerX + 150, playerY + playerHeight/3, 50, 30))
-    }
+        canShoot=false
+        setTimeout(() => canShoot = true, 1000)
+      }
     projectiles.forEach(element => {
         element.draw()
         element.checkProjectileCollision(enemies)
@@ -242,7 +245,7 @@ window.addEventListener('load', () => {
         }
         if (event.key === " ") {
             isShooting = true
-            shootingId = 0  
+            canShoot = false
         }
       })
 
@@ -257,5 +260,15 @@ window.addEventListener('load', () => {
 
 });
 
+/* let shootingId = 0
 
+if (isShooting && shootingId % 20 === 0) {
+  shootingId ++
+  projectiles.push(new Projectile(playerX + 150, playerY + playerHeight/3, 50, 30))
+}
 
+if (event.key === " ") {
+  isShooting = true
+  shootingId = 0   
+}
+}) */

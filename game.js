@@ -46,6 +46,8 @@ enemyImg.src ="./images/enemy-aircraft.png"
 
 let enemies = []
 
+let enemySpeed = 4
+
 class Enemy {
     constructor(xPos, yPos, width, height) {
         this.xPos = xPos
@@ -55,7 +57,7 @@ class Enemy {
     }
     draw() {
         ctx.drawImage(enemyImg, this.xPos, this.yPos, this.width, this.height)
-        this.xPos -= 4
+        this.xPos -= enemySpeed
     }
     checkCollision() {
         if (
@@ -137,6 +139,7 @@ const finalScore = document.querySelector(".final-score")
 const highScore = document.querySelector(".high-score");
 let score = 0;
 let highScoreCounter = 0;
+const gameoverMsg = document.querySelector(".message");
 
 
 let canShoot = true
@@ -217,6 +220,10 @@ const animate = () => {
     
     if(score === 1000){gameOver = true}
 
+    if(score === 20){ enemySpeed = 8
+
+    }
+
 
     if (gameOver) {
         cancelAnimationFrame(animateId)
@@ -231,6 +238,18 @@ const animate = () => {
       } else {
         animateId = requestAnimationFrame(animate)
     }
+    
+    //Gameover messages
+    if (score >= 0 && score <= 200) {
+      gameoverMsg.innerText = "We have lost the war!"
+    }
+    else if (score >= 200 && score <= 999) {
+      gameoverMsg.innerText = "We have eliminated majority of them, almost there!"
+    }
+    else {
+      gameoverMsg.innerText = "You have aced it!"
+    }
+
 }
 
 
@@ -240,11 +259,31 @@ const startGame = () => {
     gameoverScreen.style.display = "none"
     animate()
   }
+const restartGame = () => {
+    splashScreen.style.display = 'none'
+    gameplayScreen.style.display = "block"
+    gameoverScreen.style.display = "none"
+    gameOver = false
+    enemies = enemies.filter(element => element.xPos > myCanvas.width)
+    projectiles = projectiles.filter(element => element.xPos > myCanvas.width) 
+    enemyProjectiles  = enemyProjectiles.filter(element => element.xPos > myCanvas.width)
+    score = 0;
+    playerX = playerWidth/5
+    playerY = myCanvas.height/2 - playerHeight/2
+  
+
+    animate()
+    
+
+}
 
 
 window.addEventListener('load', () => {
     document.getElementById('start-button').onclick = () => {
       startGame()   
+    }
+    document.getElementById('restart-button').onclick = () => {
+      restartGame()
     }
     document.addEventListener('keydown', event => {
         if (event.key === 'a') {

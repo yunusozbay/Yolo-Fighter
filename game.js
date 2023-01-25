@@ -55,7 +55,7 @@ class Enemy {
     }
     draw() {
         ctx.drawImage(enemyImg, this.xPos, this.yPos, this.width, this.height)
-        this.xPos -= 2
+        this.xPos -= 4
     }
     checkCollision() {
         if (
@@ -97,6 +97,7 @@ class Projectile {
         this.height + this.yPos > enemyArr[i].yPos) {
           enemyArr.splice(i, 1);
           projectiles.splice(this, 1)
+          score += 10
       }
     }
   }
@@ -117,7 +118,7 @@ class EnemyProjectile {
   }
   draw() {
     ctx.drawImage(enemyProjectileImg, this.xPos, this.yPos, this.width, this.height)
-    this.xPos -= getRandomInt(4, 10)
+    this.xPos -= 8
   }
   checkEnemyProjectileCollision() {
     if (
@@ -131,11 +132,17 @@ class EnemyProjectile {
 }
 }
 
+//Score and IDs
+const finalScore = document.querySelector(".final-score")
+const highScore = document.querySelector(".high-score");
+let score = 0;
+let highScoreCounter = 0;
 
 
 let canShoot = true
 let animateId
 let gameOver = false
+
 
 
 const animate = () => {
@@ -179,9 +186,6 @@ const animate = () => {
     enemies = enemies.filter(enemy => enemy.xPos > -150)  
 
     //Player projectile
-    
-    
-
     if (isShooting && canShoot) {
         projectiles.push(new Projectile(playerX + 150, playerY + playerHeight/3, 50, 30))
         canShoot=false
@@ -206,12 +210,24 @@ const animate = () => {
 
     enemyProjectiles = enemyProjectiles.filter(element => element.xPos > -150)
 
+    //score
+    ctx.font = "32px Black Ops One";
+    ctx.fillStyle = "black";
+    ctx.fillText(`Score: ${score}`, myCanvas.width-220, 40);
+    
+    if(score === 1000){gameOver = true}
+
 
     if (gameOver) {
         cancelAnimationFrame(animateId)
-        splashScreen.style.display = 'none'
+        splashScreen.style.display = 'none' 
         gameplayScreen.style.display = "none"
         gameoverScreen.style.display = "block"
+        finalScore.innerText = `Score: ${score}`
+        if(score > highScoreCounter) {
+          highScoreCounter = score
+        }
+        highScore.innerText = `High Score: ${highScoreCounter}`
       } else {
         animateId = requestAnimationFrame(animate)
     }
@@ -245,7 +261,6 @@ window.addEventListener('load', () => {
         }
         if (event.key === " ") {
             isShooting = true
-       
         }
       })
 

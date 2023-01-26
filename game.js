@@ -8,8 +8,21 @@ gameoverScreen.style.display = "none"
 
 const myCanvas = document.querySelector('canvas');
 const ctx = myCanvas.getContext("2d");
-
 myCanvas.style.border = "1px solid black"
+
+//Audio
+const mainTheme = new Audio("./audio/mainTheme.mp3");
+mainTheme.volume = 0.3;
+const explosionSound = new Audio("./audio/explosion.mp3");
+explosionSound.volume = 0.2;
+const mouseclickSiren = new Audio("./audio/mouseclickSiren.mp3");
+mouseclickSiren.volume = 0.2;
+const playerCannonSound = new Audio("./audio/cannon.mp3");
+playerCannonSound.volume = 0.2;
+const playerSound = new Audio("./audio/playerAirplane.mp3");
+playerSound.volume = 0.1;
+const siren800 = new Audio("./audio/sirenAfter800score.mp3");
+siren800.volume = 0.3;
 
 //Background
 const bgImg = new Image();
@@ -67,6 +80,7 @@ class Enemy {
           playerHeight + playerY > this.yPos
         ) {
           gameOver = true
+          explosionSound.play()
         }
     }
 /*     die() {
@@ -100,6 +114,7 @@ class Projectile {
           enemyArr.splice(i, 1);
           projectiles.splice(this, 1)
           score += 20
+          explosionSound.play()
       }
     }
   }
@@ -130,6 +145,7 @@ class EnemyProjectile {
       playerHeight + playerY > this.yPos
     ) {
       gameOver = true
+      explosionSound.play()
     }
 }
 }
@@ -240,6 +256,8 @@ const animate = () => {
       bgSpeed = 3
       enemySpeed = 10
       enemyProjectileSpeed = 14
+      siren800.play()
+      siren800.loop = true
     }
   
 
@@ -250,6 +268,10 @@ const animate = () => {
         gameplayScreen.style.display = "none"
         gameoverScreen.style.display = "block"
         finalScore.innerText = `Score: ${score}`
+        playerSound.pause()
+        siren800.pause()
+        mainTheme.load()
+        mainTheme.play()
         if(score > highScoreCounter) {
           highScoreCounter = score
         }
@@ -259,7 +281,7 @@ const animate = () => {
     }
     
     //Gameover messages
-    if (score >= 0 && score <= 200) {
+    if (score >= 0 && score < 500) {
       gameoverMsg.innerText = "We have lost the war!"
     }
     else if (score >= 500 && score <= 999) {
@@ -270,7 +292,6 @@ const animate = () => {
     }
 
 }
-
 
 const startGame = () => {
     splashScreen.style.display = 'none'
@@ -292,20 +313,26 @@ const restartGame = () => {
     enemySpeed = 3
     enemyProjectileSpeed = 5
     bgSpeed = 2
-  
-
-    animate()
-    
-
+    animate()  
 }
-
 
 window.addEventListener('load', () => {
     document.getElementById('start-button').onclick = () => {
-      startGame()   
+      startGame()
+      playerSound.play()
+      playerSound.loop = true
+      mouseclickSiren.play()
+      mainTheme.pause()   
     }
     document.getElementById('restart-button').onclick = () => {
       restartGame()
+      playerSound.play()
+      playerSound.loop = true
+      mouseclickSiren.play()
+      mainTheme.pause()   
+    }
+    document.getElementById('splash-screen').onmousemove = () => {
+      mainTheme.play()
     }
     document.addEventListener('keydown', event => {
         if (event.key === 'a') {
@@ -322,6 +349,7 @@ window.addEventListener('load', () => {
         }
         if (event.key === " ") {
             isShooting = true
+            playerCannonSound.play()
         }
       })
 
@@ -336,15 +364,3 @@ window.addEventListener('load', () => {
 
 });
 
-/* let shootingId = 0
-
-if (isShooting && shootingId % 20 === 0) {
-  shootingId ++
-  projectiles.push(new Projectile(playerX + 150, playerY + playerHeight/3, 50, 30))
-}
-
-if (event.key === " ") {
-  isShooting = true
-  shootingId = 0   
-}
-}) */

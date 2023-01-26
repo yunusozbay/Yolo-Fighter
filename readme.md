@@ -24,7 +24,7 @@ Yolo-Fighter is a 2D-game where the player has to move its fighter plane in x,y 
 
 ## Data structure
 
-# game.js
+## game.js
 
 - Enemy () {this.xPos; this.yPos; this.width; this.height}
 - draw ()

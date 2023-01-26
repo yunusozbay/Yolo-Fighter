@@ -195,7 +195,7 @@ const animate = () => {
     }
 
     //Enemy aircrafts
-    if (animateId % 100 === 0) {
+    if (animateId % 60 === 0) {
     enemies.push(new Enemy(myCanvas.width + 125, (myCanvas.height - 170) * Math.random(), 125, 75))}
   
     enemies.forEach(enemy => {
@@ -354,13 +354,22 @@ window.addEventListener('load', () => {
       })
 
     document.addEventListener('keyup', () => {
+      if (event.key === 'a') {
         isMovingLeft = false
+      }
+      if (event.key === 'd') {
         isMovingRight = false
+      }
+      if (event.key === "w") {
         isMovingUp = false
+      }
+      if (event.key === "s") {
         isMovingDown = false
+     }
+      if (event.key === " ") {
         isShooting = false
+      }
       })
-
 
 });
 

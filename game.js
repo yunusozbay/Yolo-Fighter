@@ -12,17 +12,17 @@ myCanvas.style.border = "1px solid black"
 
 //Audio
 const mainTheme = new Audio("./audio/mainTheme.mp3");
-mainTheme.volume = 0.3;
+mainTheme.volume = 0.1;
 const explosionSound = new Audio("./audio/explosion.mp3");
-explosionSound.volume = 0.2;
+explosionSound.volume = 0.1;
 const mouseclickSiren = new Audio("./audio/mouseclickSiren.mp3");
-mouseclickSiren.volume = 0.2;
+mouseclickSiren.volume = 0.1;
 const playerCannonSound = new Audio("./audio/cannon.mp3");
-playerCannonSound.volume = 0.2;
+playerCannonSound.volume = 0.1;
 const playerSound = new Audio("./audio/playerAirplane.mp3");
-playerSound.volume = 0.1;
+playerSound.volume = 0.05;
 const siren800 = new Audio("./audio/sirenAfter800score.mp3");
-siren800.volume = 0.3;
+siren800.volume = 0.1;
 
 //Background
 const bgImg = new Image();
@@ -113,7 +113,7 @@ class Projectile {
         this.height + this.yPos > enemyArr[i].yPos) {
           enemyArr.splice(i, 1);
           projectiles.splice(this, 1)
-          score += 20
+          score += 50
           explosionSound.play()
       }
     }
@@ -195,7 +195,7 @@ const animate = () => {
     }
 
     //Enemy aircrafts
-    if (animateId % 60 === 0) {
+    if (animateId % 75 === 0) {
     enemies.push(new Enemy(myCanvas.width + 125, (myCanvas.height - 170) * Math.random(), 125, 75))}
   
     enemies.forEach(enemy => {
@@ -373,3 +373,15 @@ window.addEventListener('load', () => {
 
 });
 
+/* const mainTheme = new Audio("./audio/mainTheme.mp3");
+mainTheme.volume = 0.3;
+const explosionSound = new Audio("./audio/explosion.mp3");
+explosionSound.volume = 0.2;
+const mouseclickSiren = new Audio("./audio/mouseclickSiren.mp3");
+mouseclickSiren.volume = 0.2;
+const playerCannonSound = new Audio("./audio/cannon.mp3");
+playerCannonSound.volume = 0.2;
+const playerSound = new Audio("./audio/playerAirplane.mp3");
+playerSound.volume = 0.1;
+const siren800 = new Audio("./audio/sirenAfter800score.mp3");
+siren800.volume = 0.3; */

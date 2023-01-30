@@ -113,7 +113,7 @@ class Projectile {
         this.height + this.yPos > enemyArr[i].yPos) {
           enemyArr.splice(i, 1);
           projectiles.splice(this, 1)
-          score += 201
+          score += 20
           explosionSound.play()
       }
     }
@@ -157,10 +157,10 @@ function increaseEnemySpeed() {
     enemySpeed *= 1.2;
     enemyProjectileSpeed *=1.2;
     justIncreased = true
+    setTimeout(() => {
+      justIncreased = false;
+    }, 5000)
   }
-  setTimeout(() => {
-    justIncreased = false;
-  }, 5000)
 }
 
 
@@ -270,13 +270,11 @@ const animate = () => {
       bgSpeed = 3
       enemySpeed = 10
       enemyProjectileSpeed = 14
-      siren800.play()
-      siren800.loop = true
     }
     if(score > 1000) {
-      setInterval(() => {
         increaseEnemySpeed();
-      }, 5000)
+        siren800.play()
+        siren800.loop = true
     }
   
 

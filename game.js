@@ -12,17 +12,17 @@ myCanvas.style.border = "1px solid black"
 
 //Audio
 const mainTheme = new Audio("./audio/mainTheme.mp3");
-mainTheme.volume = 0.1;
+mainTheme.volume = 0.3;
 const explosionSound = new Audio("./audio/explosion.mp3");
-explosionSound.volume = 0.1;
+explosionSound.volume = 0.2;
 const mouseclickSiren = new Audio("./audio/mouseclickSiren.mp3");
-mouseclickSiren.volume = 0.1;
+mouseclickSiren.volume = 0.2;
 const playerCannonSound = new Audio("./audio/cannon.mp3");
-playerCannonSound.volume = 0.1;
+playerCannonSound.volume = 0.2;
 const playerSound = new Audio("./audio/playerAirplane.mp3");
-playerSound.volume = 0.05;
+playerSound.volume = 0.1;
 const siren800 = new Audio("./audio/sirenAfter800score.mp3");
-siren800.volume = 0.1;
+siren800.volume = 0.3;
 
 //Background
 const bgImg = new Image();
@@ -113,7 +113,7 @@ class Projectile {
         this.height + this.yPos > enemyArr[i].yPos) {
           enemyArr.splice(i, 1);
           projectiles.splice(this, 1)
-          score += 50
+          score += 201
           explosionSound.play()
       }
     }
@@ -149,6 +149,20 @@ class EnemyProjectile {
     }
 }
 }
+
+let justIncreased = false;
+
+function increaseEnemySpeed() {
+  if(!justIncreased) {
+    enemySpeed *= 1.2;
+    enemyProjectileSpeed *=1.2;
+    justIncreased = true
+  }
+  setTimeout(() => {
+    justIncreased = false;
+  }, 5000)
+}
+
 
 //Score and IDs
 const finalScore = document.querySelector(".final-score")
@@ -234,7 +248,7 @@ const animate = () => {
     ctx.fillStyle = "black";
     ctx.fillText(`Score: ${score}`, myCanvas.width-220, 40);
     
-    if(score >= 1000){gameOver = true}
+    /* if(score >= 1000){gameOver = true} */
 
     if(score === 100){ 
       enemySpeed = 4
@@ -258,6 +272,11 @@ const animate = () => {
       enemyProjectileSpeed = 14
       siren800.play()
       siren800.loop = true
+    }
+    if(score > 1000) {
+      setInterval(() => {
+        increaseEnemySpeed();
+      }, 5000)
     }
   
 
@@ -335,16 +354,16 @@ window.addEventListener('load', () => {
       mainTheme.play()
     }
     document.addEventListener('keydown', event => {
-        if (event.key === 'a') {
+        if (event.key === 'a' || event.key === "ArrowLeft") {
             isMovingLeft = true
         }
-        if (event.key === 'd') {
+        if (event.key === 'd' || event.key === "ArrowRight") {
             isMovingRight = true
         }
-        if (event.key === "w") {
+        if (event.key === "w" || event.key === "ArrowUp") {
             isMovingUp = true
         }
-        if (event.key === "s") {
+        if (event.key === "s" || event.key === "ArrowDown") {
             isMovingDown = true
         }
         if (event.key === " ") {
@@ -354,16 +373,16 @@ window.addEventListener('load', () => {
       })
 
     document.addEventListener('keyup', () => {
-      if (event.key === 'a') {
+      if (event.key === 'a' || event.key === "ArrowLeft") {
         isMovingLeft = false
       }
-      if (event.key === 'd') {
+      if (event.key === 'd' || event.key === "ArrowRight") {
         isMovingRight = false
       }
-      if (event.key === "w") {
+      if (event.key === "w" || event.key === "ArrowUp") {
         isMovingUp = false
       }
-      if (event.key === "s") {
+      if (event.key === "s" || event.key === "ArrowDown") {
         isMovingDown = false
      }
       if (event.key === " ") {
@@ -373,15 +392,3 @@ window.addEventListener('load', () => {
 
 });
 
-/* const mainTheme = new Audio("./audio/mainTheme.mp3");
-mainTheme.volume = 0.3;
-const explosionSound = new Audio("./audio/explosion.mp3");
-explosionSound.volume = 0.2;
-const mouseclickSiren = new Audio("./audio/mouseclickSiren.mp3");
-mouseclickSiren.volume = 0.2;
-const playerCannonSound = new Audio("./audio/cannon.mp3");
-playerCannonSound.volume = 0.2;
-const playerSound = new Audio("./audio/playerAirplane.mp3");
-playerSound.volume = 0.1;
-const siren800 = new Audio("./audio/sirenAfter800score.mp3");
-siren800.volume = 0.3; */

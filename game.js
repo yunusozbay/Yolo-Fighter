@@ -264,7 +264,7 @@ const animate = () => {
     }
     if(score === 600){ 
       enemySpeed = 7
-      enemyProjectileSpeed = 9
+      enemyProjectileSpeed = 10
     }
     if(score === 800){
       bgSpeed = 3
